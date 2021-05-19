@@ -436,7 +436,6 @@ void M5Display::drawJpgFile(fs::FS &fs, const char *path, uint16_t x, uint16_t y
  */
 
 #include "utility/pngle.h"
-#include <HTTPClient.h>
 
 typedef struct _png_draw_params {
   uint16_t x;
@@ -537,17 +536,25 @@ void M5Display::drawPngFile(fs::FS &fs, const char *path, uint16_t x, uint16_t y
 }
 
 void M5Display::drawPngUrl(const char *url, uint16_t x, uint16_t y,
+                           uint16_t maxWidth, uint16_t maxHeight, uint16_t offX,
+                           uint16_t offY, double scale, uint8_t alphaThreshold) {
+    HTTPClient http;
+
+    http.begin(url);
+    M5Display::drawPngHttp(http, x, y, maxWidth, maxHeight, offX, offY, scale, alphaThreshold);
+
+    http.end();
+}
+
+void M5Display::drawPngHttp(HTTPClient& http, uint16_t x, uint16_t y,
                             uint16_t maxWidth, uint16_t maxHeight, uint16_t offX,
                             uint16_t offY, double scale, uint8_t alphaThreshold)
 {
-  HTTPClient http;
-
   if (WiFi.status() != WL_CONNECTED) {
     log_e("Not connected");
     return ;
   }
 
-  http.begin(url);
 
   int httpCode = http.GET();
   if (httpCode != HTTP_CODE_OK) {
@@ -612,5 +619,4 @@ void M5Display::drawPngUrl(const char *url, uint16_t x, uint16_t y,
   }
 
   pngle_destroy(pngle);
-  http.end();
 }

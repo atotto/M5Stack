@@ -4,6 +4,7 @@
   #include <Arduino.h>
   #include <FS.h>
   #include <SPI.h>
+  #include <HTTPClient.h>
   #include "utility/In_eSPI.h"
   #include "utility/Sprite.h"
 
@@ -87,11 +88,15 @@
                     uint16_t offX = 0, uint16_t offY = 0,
                     double scale = 1.0, uint8_t alphaThreshold = 127);
 
-      void drawPngUrl(const char *url, uint16_t x = 0, uint16_t y = 0,
+      void drawPngHttp(HTTPClient& http, uint16_t x = 0, uint16_t y = 0,
                     uint16_t maxWidth = 0, uint16_t maxHeight = 0,
                     uint16_t offX = 0, uint16_t offY = 0,
                     double scale = 1.0, uint8_t alphaThreshold = 127);
 
+      void drawPngUrl(const char *url, uint16_t x = 0, uint16_t y = 0,
+                    uint16_t maxWidth = 0, uint16_t maxHeight = 0,
+                    uint16_t offX = 0, uint16_t offY = 0,
+                    double scale = 1.0, uint8_t alphaThreshold = 127);
     private:
   };
 #endif
